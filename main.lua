@@ -30,8 +30,8 @@ end
 -- Load Game.
 -- Loads and initializes the game
 function love.load()
-	Engine:init()
 	InputManager:init()
+	Engine:init()
 end
 
 
@@ -55,6 +55,7 @@ end
 function love.quit()
 	-- Before quits runs this:
 	Engine:shutdown()
+	InputManager:shutdown()
 end
 
 
@@ -83,14 +84,19 @@ function love.mousepressed(x,y,button)
 end
 
 
+---------------------------------------------------------
+-- Mouse button has been released.
 function love.mousereleased(x,y,button)
 	InputManager:handleMouseReleased(button, x, y)
 end
 
 
+-------------------------
+-- A key has been presed.
 function love.keypressed(key)
 	InputManager:handleKeyPressed(key)
 end
+
 
 ----------------------------------------
 -- Handles heyboard input

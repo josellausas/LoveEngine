@@ -12,7 +12,7 @@ local Camera = class('Camera')
 -- - x, y: X and Y coords
 -- - scaleX, scaleY: Scale factors
 -- - rotation: the rotation in radians
--- @params opts options table.
+-- @param opts options table.
 function Camera:initialize(opts)
 	if opts == nil then opts = {} end
 

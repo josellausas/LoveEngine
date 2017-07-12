@@ -9,21 +9,40 @@ local LevelMap = require('src.objects.LevelMap')
 local Camera = require('src.Camera')
 local Input = require('src.InputManager')
 
-
 local Engine = {
+	--- The map grid for the game
 	level_map = nil,
+	--- The game's camera. The "player's eye"
 	camera = nil,
+	--- Keeps track of all the objects for the game
 	all_objects = {}, -- These are strong links
+	--- These do not move. Do not call :update() on them
 	static_objects = {}, -- Weak links
+	--- Kinematic Objects. These move and have an update(dt) function
 	moving_objects = {}, -- Weak links
+	--- How long has the game been running. A dt timebucket
 	elapsed_time = 0,
+	--- Some user preferences.
 	config = {
 		upKey = 'up',
 		downKey = 'down',
 		leftKey = 'left',
 		rightKey = 'right'
-	}
+	},
 }
+
+--------------------------------------------
+-- Callback for click event.
+-- Reacts to the user releasing the mouse button.
+-- @function handleClick.
+-- @param button The mouse button released.
+-- @param x The x screen coordinate (not game coordinate)
+-- @param y The y screen coordinate (not game coordinate)
+local handleClick = function(button, x, y)
+	-- Take into account the camera to get the correct coordinates
+	local gameX, gameY = Engine.camera:mousePosition(x,y)
+	Engine:create('obj', {x=gameX, y=gameY})
+end
 
 
 ----------------------------
@@ -45,6 +64,7 @@ end
 -- Dont forget to shut down!
 function Engine:init()
 	self:reset()
+	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
 end
 
 
@@ -120,6 +140,8 @@ end
 -- Release memory.
 -- Releases all the objects and memory
 function Engine:shutdown()
+	Input.on_mouse_released:removeAction(handleClick)
+
 	-- Loop all objects and dispose
 	self.moving_objects = nil
 	self.static_objects = nil
@@ -128,5 +150,6 @@ function Engine:shutdown()
 	end
 	self:reset()
 end
+
 
 return Engine
