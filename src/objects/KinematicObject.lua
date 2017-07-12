@@ -8,12 +8,13 @@ local rotate90 = math.rad(90)
 
 local KinematicObject = class('KinematicObject', TextureObject)
 
+
 -------------------------------------------------
 -- Creates a new Kinematic Object.
 -- The options can be:
 -- - speed
 -- - heading
--- @tparam opts {} The options for the object
+-- @param opts {} The options for the object
 function KinematicObject:initialize(opts)
 	-- Invoke parent's constructor
 	TextureObject.initialize(self, opts)

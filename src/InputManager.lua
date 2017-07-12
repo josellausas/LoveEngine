@@ -4,7 +4,7 @@
 local InputManager = {
 	log = nil
 }
-local RenderObject = require('src.objects.RenderObject')
+local Engine = require 'src.Engine'
 
 ------------------------------
 -- Initialize the manager.
