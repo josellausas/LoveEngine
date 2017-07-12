@@ -6,8 +6,6 @@ local InputManager = {
 	log = nil
 }
 
-local Engine = require 'src.Engine'
-
 
 ------------------------------
 -- Initialize the manager.
@@ -43,6 +41,7 @@ end
 -- @param x The X coordinate on screen
 -- @param y The Y coordinate on screen
 function InputManager:handleMousePressed(button, x, y)
+
 end
 
 
@@ -53,13 +52,12 @@ end
 -- @param x The X coordinate on screen
 -- @param y The Y coordinate on screen
 function InputManager:handleMouseReleased(button, x, y)
-	Engine:create('obj', {
-		x = x,
-		y = y,
-		label = 'object01'
-	})
+
 end
 
+function InputManager:isKeyDown(key)
+	return love.keyboard.isDown(key)
+end
 
 ------------------------------
 -- Clean up.

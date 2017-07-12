@@ -13,14 +13,13 @@ local Camera = class('Camera')
 -- - scaleX, scaleY: Scale factors
 -- - rotation: the rotation in radians
 -- @params opts options table.
-function Camera:initialize(opts)
-	if opts == nil then opts = {} end
-
-	self.x = opts.x or 0
-	self.y = opts.y or 0
-	self.scaleX = opts.scaleX or 4
-	self.scaleY = opts.scaleY or 4
-	self.rotation = opts.rotation or 0
+function Camera:initialize()
+	self.x = 0
+	self.y = 0
+	self.scaleX = 4
+	self.scaleY = 4
+	self.rotation = 0
+	self.speed = 800
 end
 
 
@@ -87,5 +86,38 @@ function Camera:mousePosition(x,y)
 	return x * self.scaleX + self.x , y * self.scaleY + self.y
 end
 
+
+----------
+-- Determines how much it should move according to input
+local function getMovementAmountFromInput(dt, speed, left, right, up, down)
+	local moveAmount = dt * speed
+	local deltaX = 0
+	local deltaY = 0
+	if left then
+		deltaX = -moveAmount
+	elseif right then
+		deltaX = moveAmount
+	end
+	if up then
+		deltaY = -moveAmount
+	elseif down then
+		deltaY = moveAmount
+	end
+	return deltaX, deltaY
+end
+
+
+---------
+-- Updates the camera with input.
+function Camera:update(dt, input)
+	local dx, dy = getMovementAmountFromInput( dt, self.speed,
+		input.left,
+		input.right,
+		input.up,
+		input.down
+	)
+
+	self:move(dx, dy)
+end
 
 return Camera

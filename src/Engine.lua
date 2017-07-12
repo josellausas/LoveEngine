@@ -7,15 +7,22 @@ local RenderObject = require('src.objects.RenderObject')
 local KinematicObject = require('src.objects.KinematicObject')
 local LevelMap = require('src.objects.LevelMap')
 local Camera = require('src.Camera')
+local Input = require('src.InputManager')
 
 
 local Engine = {
 	level_map = nil,
-	level_camera = nil,
+	camera = nil,
 	all_objects = {}, -- These are strong links
 	static_objects = {}, -- Weak links
 	moving_objects = {}, -- Weak links
-	elapsed_time = 0
+	elapsed_time = 0,
+	config = {
+		upKey = 'up',
+		downKey = 'down',
+		leftKey = 'left',
+		rightKey = 'right'
+	}
 }
 
 
@@ -28,7 +35,7 @@ function Engine:reset()
 	self.moving_objects = {}
 	self.elapsed_time = 0
 	self.level_map = LevelMap:new(10, 10, 100, {})
-	self.level_camera = Camera:new()
+	self.camera = Camera:new()
 end
 
 
@@ -48,6 +55,16 @@ end
 function Engine:update(dt)
 	-- Time buckets
 	self.elapsed_time = self.elapsed_time + dt
+
+	-- Update the camera
+	self.camera:update(dt, {
+		left = Input:isKeyDown(self.config.leftKey),
+		right = Input:isKeyDown(self.config.rightKey),
+		up = Input:isKeyDown(self.config.upKey),
+		down = Input:isKeyDown(self.config.downKey),
+	})
+
+	-- TODO: Update the objects here
 end
 
 
@@ -55,12 +72,19 @@ end
 -- Renders all the things.
 -- All the things get rendered
 function Engine:draw()
-	-- First the floor
-	self.level_map:draw()
 
-	for _, drawable in ipairs(self.all_objects) do
-		drawable:draw()
-	end
+	self.camera:set()
+		-- This is relative to the camera
+		-- First the floor
+		self.level_map:draw()
+		for _, drawable in ipairs(self.all_objects) do
+			drawable:draw()
+		end
+	self.camera:unset()
+	-- This is not relative to camera
+
+	-- Draw GUI here
+
 end
 
 
