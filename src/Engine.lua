@@ -5,11 +5,14 @@
 -- Renders the things in the right order.
 local RenderObject = require('src.objects.RenderObject')
 local KinematicObject = require('src.objects.KinematicObject')
+local LevelMap = require('src.objects.LevelMap')
+
 local Engine = {
 	--- Stores all objects created
 	all_objects = {}, -- These are strong links
 	static_objects = {}, -- Weak links
 	moving_objects = {}, -- Weak links
+	level_map = nil,
 	elapsed_time = 0
 }
 
@@ -21,6 +24,7 @@ function Engine:reset()
 	self.static_objects = {}
 	self.moving_objects = {}
 	self.elapsed_time = 0
+	self.level_map = LevelMap:new(10, 10, 100, {})
 end
 
 
@@ -47,6 +51,9 @@ end
 -- Renders all the things.
 -- All the things get rendered
 function Engine:draw()
+	-- First the floor
+	self.level_map:draw()
+
 	for _, drawable in ipairs(self.all_objects) do
 		drawable:draw()
 	end
