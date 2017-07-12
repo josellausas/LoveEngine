@@ -1,10 +1,13 @@
 ----------------------------------------------
 -- Input Manager.
 -- Handles all input events and keeps a log
+
 local InputManager = {
 	log = nil
 }
+
 local Engine = require 'src.Engine'
+
 
 ------------------------------
 -- Initialize the manager.
@@ -32,9 +35,23 @@ function InputManager:handleKeyReleased(key)
 	print('Relesed: ' .. key)
 end
 
+
+--------------------------------
+-- Mouse Pressed.
+-- On Mouse pressed event handler
+-- @param button The button pressed
+-- @param x The X coordinate on screen
+-- @param y The Y coordinate on screen
 function InputManager:handleMousePressed(button, x, y)
 end
 
+
+--------------------------------
+-- Mouse Released.
+-- On Mouse released event handler
+-- @param button The button released
+-- @param x The X coordinate on screen
+-- @param y The Y coordinate on screen
 function InputManager:handleMouseReleased(button, x, y)
 	Engine:create('obj', {
 		x = x,
@@ -43,11 +60,13 @@ function InputManager:handleMouseReleased(button, x, y)
 	})
 end
 
+
 ------------------------------
 -- Clean up.
 -- Disposes and releases memory
 function InputManager:shutdown()
 	self.log = nil
 end
+
 
 return InputManager

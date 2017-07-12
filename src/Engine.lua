@@ -6,15 +6,18 @@
 local RenderObject = require('src.objects.RenderObject')
 local KinematicObject = require('src.objects.KinematicObject')
 local LevelMap = require('src.objects.LevelMap')
+local Camera = require('src.Camera')
+
 
 local Engine = {
-	--- Stores all objects created
+	level_map = nil,
+	level_camera = nil,
 	all_objects = {}, -- These are strong links
 	static_objects = {}, -- Weak links
 	moving_objects = {}, -- Weak links
-	level_map = nil,
 	elapsed_time = 0
 }
+
 
 ----------------------------
 -- Clears all internals.
@@ -25,6 +28,7 @@ function Engine:reset()
 	self.moving_objects = {}
 	self.elapsed_time = 0
 	self.level_map = LevelMap:new(10, 10, 100, {})
+	self.level_camera = Camera:new()
 end
 
 
