@@ -95,6 +95,11 @@ describe('Engine', function()
 		assert.is_equal(movingThing.lifetime, 12)
 		assert.is_not_equal(movingThing.x, 0)
 
+		-- Assert the list sizes
+		assert.is_equal(#Engine.static_objects, 1)
+		assert.is_equal(#Engine.moving_objects, 1)
+		assert.is_equal(#Engine.all_objects, 2)
+
 		Engine:shutdown()
 	end)
 end)

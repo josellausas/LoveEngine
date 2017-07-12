@@ -1,19 +1,20 @@
-----------------------
+---------------------------------------------------
 -- A moving object.
--- An object that can move.
+-- An object that can move and knows how to update and draw itself.
+-- Must call the update()  and draw() functions on this every frame.
 local class = require 'middleclass'
 local TextureObject = require('src.objects.TextureObject')
 local rotate90 = math.rad(90)
 
-local KineticObject = class('KineticObject', TextureObject)
+local KinematicObject = class('KinematicObject', TextureObject)
 
 -------------------------------------------------
--- Creates a new Kinetic Object.
+-- Creates a new Kinematic Object.
 -- The options can be:
 -- - speed
 -- - heading
 -- @tparam opts {} The options for the object
-function KineticObject:initialize(opts)
+function KinematicObject:initialize(opts)
 	-- Invoke parent's constructor
 	TextureObject.initialize(self, opts)
 
@@ -28,7 +29,7 @@ end
 -- Set forward vector.
 -- Set heading to a forward vector with X and Y components.
 -- Converts a foward vector to radians. The vector mush be normalized!!!
-function KineticObject:setHeading(x,y)
+function KinematicObject:setHeading(x,y)
 	self.heading = math.atan2(y, x)
 end
 
@@ -37,7 +38,7 @@ end
 -- Update.
 -- Heartbeat
 -- @param dt Delta Time. Time since last update
-function KineticObject:update(dt)
+function KinematicObject:update(dt)
 	-- Alive timer update
 	self.lifetime = self.lifetime + dt
 
@@ -56,7 +57,7 @@ end
 -------------------------------------------
 -- Draw.
 -- Draws itself
-function KineticObject:draw()
+function KinematicObject:draw()
 	love.graphics.draw(
 		self.image,
 		self.x, self.y,
@@ -73,7 +74,7 @@ end
 -- @param x The x coord of the point.
 -- @param y The y coord of the point.
 -- @return The distance to the point squared.
-function KineticObject:distSqToPosition(x,y)
+function KinematicObject:distSqToPosition(x,y)
 	-- Get a vector from us to the target (distVector)
 	local distX = x - self.x
 	local distY = y - self.y
@@ -88,7 +89,7 @@ end
 -- Does not take into considetaion it's own radius.
 -- @param circle The circle {x,y,radius}
 -- @return True if inside, False if outside.
-function KineticObject:isInsideCircle(circle)
+function KinematicObject:isInsideCircle(circle)
 	local x,y = circle.x, circle.y
 	local radius = circle.radius
 
@@ -99,4 +100,4 @@ function KineticObject:isInsideCircle(circle)
 	return (distSq < radiusSq)
 end
 
-return KineticObject
+return KinematicObject

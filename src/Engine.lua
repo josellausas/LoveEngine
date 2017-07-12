@@ -4,7 +4,7 @@
 -- The engine is the one in charge of creating and managing objects in the game.
 -- Renders the things in the right order.
 local RenderObject = require('src.objects.RenderObject')
-local KineticObject = require('src.objects.KineticObject')
+local KinematicObject = require('src.objects.KinematicObject')
 local Engine = {
 	--- Stores all objects created
 	all_objects = {}, -- These are strong links
@@ -65,7 +65,7 @@ function Engine:create(obj_type, opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.static_objects, created_obj)
 	elseif obj_type == "mov" then
-		created_obj = KineticObject:new(opts)
+		created_obj = KinematicObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.moving_objects, created_obj)
 	end
