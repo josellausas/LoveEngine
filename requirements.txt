@@ -6,3 +6,4 @@
 # Install them using `luarocks install [xxxxxx]`
 middleclass
 busted
+luacov
