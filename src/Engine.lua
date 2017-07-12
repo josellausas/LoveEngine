@@ -1,9 +1,9 @@
-local RenderObject = require('src.RenderObject')
 ---------------------------------------------
 -- Main Interface.
 -- This is the main API for interacting with the game.
 -- The engine is the one in charge of creating and managing objects in the game.
 -- Renders the things in the right order.
+local RenderObject = require('src.RenderObject')
 local Engine = {
 	--- Stores all objects created
 	all_objects = {},

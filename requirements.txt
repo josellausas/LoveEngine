@@ -1,0 +1,8 @@
+###############################
+# 1. Install Love2D
+# 2. Install luarocks
+#####################################
+# These are the required modules.
+# Install them using `luarocks install [xxxxxx]`
+middleclass
+busted

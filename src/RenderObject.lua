@@ -1,9 +1,7 @@
-local class = require 'middleclass'
-
 -----------------------------------------
 -- Base Class for rendering objects.
 local RenderObject = class('RenderObject')
-
+local class = require 'middleclass'
 local defaults = {
 	radius = 20
 }
@@ -16,7 +14,7 @@ local defaults = {
 -- - is_debug: debug flag
 -- - radius: the radius for the draw circle
 -- - label: (optional) a string representation of the object
--- @tparam {} The options for a render object
+-- @param opts The options for a render object
 function RenderObject:initialize(opts)
 	self.x = opts.x or 0
 	self.y = opts.y or 0
@@ -25,7 +23,7 @@ function RenderObject:initialize(opts)
 	self.label = opts.label or nil
 end
 
------------------------
+-----------------------------------
 -- Renders the object.
 -- The object draws itself at the x and y position.
 -- Renders a circle and debug information if enabled.

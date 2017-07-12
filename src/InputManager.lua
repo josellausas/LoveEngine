@@ -1,11 +1,10 @@
-local Engine = require('src.Engine')
 ----------------------------------------------
 -- Input Manager.
 -- Handles all input events and keeps a log
 local InputManager = {
 	log = nil
 }
-
+local RenderObject = require('src.RenderObject')
 
 ------------------------------
 -- Initialize the manager.
