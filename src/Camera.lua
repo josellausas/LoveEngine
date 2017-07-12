@@ -13,13 +13,15 @@ local Camera = class('Camera')
 -- - scaleX, scaleY: Scale factors
 -- - rotation: the rotation in radians
 -- @params opts options table.
-function Camera:initialize()
-	self.x = 0
-	self.y = 0
-	self.scaleX = 4
-	self.scaleY = 4
-	self.rotation = 0
-	self.speed = 800
+function Camera:initialize(opts)
+	if opts == nil then opts = {} end
+
+	self.x = opts.x or 0
+	self.y = opts.y or 0
+	self.scaleX = opts.scale or 4
+	self.scaleY = opts.scale or 4
+	self.rotation = opts.rotation or 0
+	self.speed = opts.speed or 800
 end
 
 

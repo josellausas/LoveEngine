@@ -35,7 +35,7 @@ function Engine:reset()
 	self.moving_objects = {}
 	self.elapsed_time = 0
 	self.level_map = LevelMap:new(10, 10, 100, {})
-	self.camera = Camera:new()
+	self.camera = Camera:new({scale=1})
 end
 
 
