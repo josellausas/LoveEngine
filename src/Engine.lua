@@ -44,7 +44,7 @@ end
 -- Run this before anything else.
 -- Dont forget to shut down!
 function Engine:init()
-	Engine:reset()
+	self:reset()
 end
 
 
@@ -126,7 +126,7 @@ function Engine:shutdown()
 	for _,obj in ipairs(self.all_objects) do
 		obj = nil
 	end
-	Engine:reset()
+	self:reset()
 end
 
 return Engine
