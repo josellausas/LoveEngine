@@ -1,7 +1,7 @@
 -----------------------------------------
 -- Base Class for rendering objects.
-local RenderObject = class('RenderObject')
 local class = require 'middleclass'
+local RenderObject = class('RenderObject')
 local defaults = {
 	radius = 20
 }
