@@ -58,7 +58,7 @@ function Engine:reset()
 	self.static_objects = {}
 	self.moving_objects = {}
 	self.elapsed_time = 0
-	self.level_map = LevelMap:new(10, 10, 100, {background_color='#2A7E43'})
+	self.level_map = LevelMap:new(10, 10, 100, {background_color='#2A7E43', line_color='#AA4839'})
 	self.camera = Camera:new({scale=1})
 	if self.on_mouse_released then
 		Input.on_mouse_released:removeAction(self.on_mouse_released)
@@ -133,6 +133,9 @@ function Engine:create(obj_type, opts)
 		table.insert(self.moving_objects, created_obj)
 	end
 
+	-- Give it an ID
+	created_obj.id = 'obj'..#self.all_objects
+	created_obj.label = created_obj.id
 	return created_obj
 end
 
