@@ -27,30 +27,34 @@ function LevelMap:initialize(numTilesX, numTilesY, tileSize, opts)
 	self.minY = self.yOffset
 	self.maxX = self.xOffset + self.width
 	self.maxY = self.yOffset + self.height
+	self.gridline = opts.gridline or true
 end
 
 --------------------------------------------------------------------
 -- Draws itself.
+-- First draws the background, then draws a gridline on top.
 function LevelMap:draw()
 	-- Draws the background
 	love.graphics.setColor(color.hex2rgb(self.background_color))
 	love.graphics.rectangle( "fill", self.xOffset, self.yOffset, self.width, self.height )
 	love.graphics.setColor(0, 0, 0)
 
-	--Draw the lines
-	love.graphics.setColor(color.hex2rgb(self.line_color))
-	-- Horizontal Lines
-	local yCoord = self.minY
-	while yCoord <= self.maxY do
-		love.graphics.line(self.minX, yCoord, self.maxX, yCoord)
-		yCoord = yCoord + self.tileSize
-	end
+	if self.gridline then
+		--Draw the lines
+		love.graphics.setColor(color.hex2rgb(self.line_color))
+		-- Horizontal Lines
+		local yCoord = self.minY
+		while yCoord <= self.maxY do
+			love.graphics.line(self.minX, yCoord, self.maxX, yCoord)
+			yCoord = yCoord + self.tileSize
+		end
 
-	-- Vertical Lines
-	local xCoord = self.minX
-	while xCoord <= self.maxX do
-		love.graphics.line(xCoord, self.minY, xCoord, self.maxY)
-		xCoord = xCoord + self.tileSize
+		-- Vertical Lines
+		local xCoord = self.minX
+		while xCoord <= self.maxX do
+			love.graphics.line(xCoord, self.minY, xCoord, self.maxY)
+			xCoord = xCoord + self.tileSize
+		end
 	end
 end
 
