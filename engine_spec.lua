@@ -195,5 +195,16 @@ describe('Engine', function()
 			assert.is_equal(10, x03)
 			assert.is_equal(20, y03)
 		end)
+
+		it('should create a group', function()
+			local option_list = {
+				{x = 0,y = 0,speed = 20,heading = 1,},
+				{x = 0,y = 0,speed = 20,heading = 1,},
+				{x = 0,y = 0,speed = 20,heading = 1,},
+			}
+			local g = Engine:createGroupWithOptions(option_list)
+			assert.is_not_nil(g)
+			assert.is_equal(3, g:count())
+		end)
 	end)
 end)

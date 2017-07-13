@@ -3,10 +3,10 @@
 -- An object that can move and knows how to update and draw itself.
 -- Must call the update()  and draw() functions on this every frame.
 local class = require 'middleclass'
-local TextureObject = require('src.objects.TextureObject')
+local RenderObejct = require('src.objects.RenderObject')
 local rotate90 = math.rad(90)
 
-local KinematicObject = class('KinematicObject', TextureObject)
+local KinematicObject = class('KinematicObject', RenderObject)
 
 
 -------------------------------------------------
@@ -17,7 +17,7 @@ local KinematicObject = class('KinematicObject', TextureObject)
 -- @param opts {} The options for the object
 function KinematicObject:initialize(opts)
 	-- Invoke parent's constructor
-	TextureObject.initialize(self, opts)
+	RenderObejct.initialize(self, opts)
 
 	-- Setup a Kineti object
 	self.speed = opts.speed or 0

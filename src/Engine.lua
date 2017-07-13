@@ -8,6 +8,10 @@ local KinematicObject = require('src.objects.KinematicObject')
 local LevelMap = require('src.objects.LevelMap')
 local Camera = require('src.Camera')
 local Input = require('src.InputManager')
+local Colors = require('src.Colors')
+local Group = require('src.objects.Group')
+
+
 
 local Engine = {
 	--- The map grid for the game
@@ -29,6 +33,7 @@ local Engine = {
 		leftKey = 'left',
 		rightKey = 'right'
 	},
+	on_mouse_released = nil,
 }
 
 --------------------------------------------
@@ -53,8 +58,13 @@ function Engine:reset()
 	self.static_objects = {}
 	self.moving_objects = {}
 	self.elapsed_time = 0
-	self.level_map = LevelMap:new(10, 10, 100, {})
+	self.level_map = LevelMap:new(10, 10, 100, {background_color='#2A7E43'})
 	self.camera = Camera:new({scale=1})
+	if self.on_mouse_released then
+		Input.on_mouse_released:removeAction(self.on_mouse_released)
+		self.on_mouse_released = nil
+	end
+	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
 end
 
 
@@ -64,7 +74,6 @@ end
 -- Dont forget to shut down!
 function Engine:init()
 	self:reset()
-	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
 end
 
 
@@ -92,7 +101,6 @@ end
 -- Renders all the things.
 -- All the things get rendered
 function Engine:draw()
-
 	self.camera:set()
 		-- This is relative to the camera
 		-- First the floor
@@ -101,10 +109,7 @@ function Engine:draw()
 			drawable:draw()
 		end
 	self.camera:unset()
-	-- This is not relative to camera
-
-	-- Draw GUI here
-
+	-- TODO: Draw GUI here
 end
 
 
@@ -115,16 +120,30 @@ end
 -- created objects and renders them in the right order.
 function Engine:create(obj_type, opts)
 	local created_obj = nil
+
+	-- Create a normal type of object
 	if obj_type == "obj" then
 		created_obj = RenderObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.static_objects, created_obj)
+	-- Create a moving type of object
 	elseif obj_type == "mov" then
 		created_obj = KinematicObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.moving_objects, created_obj)
 	end
+
 	return created_obj
+end
+
+
+function Engine:createGroupWithOptions(groupList)
+	local created_list = {}
+	for k,option in ipairs(groupList) do
+		local newThing = KinematicObject:new(option)
+		table.insert(created_list, newThing)
+	end
+	return Group:new(created_list, {})
 end
 
 
@@ -140,7 +159,10 @@ end
 -- Release memory.
 -- Releases all the objects and memory
 function Engine:shutdown()
-	Input.on_mouse_released:removeAction(handleClick)
+	if self.on_mouse_released then
+		Input.on_mouse_released:removeAction(self.on_mouse_released)
+		self.on_mouse_released = nil
+	end
 
 	-- Loop all objects and dispose
 	self.moving_objects = nil

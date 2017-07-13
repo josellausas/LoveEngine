@@ -4,10 +4,10 @@
 local Events = require('src.Events')
 local InputManager = {
 	log = nil,
-	on_mouse_released = nil,
-	on_mouse_pressed = nil,
-	on_key_pressed = nil,
-	on_key_released = nil,
+	on_mouse_released = Events.newEvent(),
+	on_mouse_pressed = Events.newEvent(),
+	on_key_pressed = Events.newEvent(),
+	on_key_released = Events.newEvent(),
 }
 
 

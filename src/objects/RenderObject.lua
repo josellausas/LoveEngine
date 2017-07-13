@@ -16,6 +16,7 @@ local defaults = {
 -- - label: (optional) a string representation of the object
 -- @param opts The options for a render object
 function RenderObject:initialize(opts)
+	if opts == nil then opts = {} end
 	self.x = opts.x or 0
 	self.y = opts.y or 0
 	self.is_debug = opts.is_debug or false

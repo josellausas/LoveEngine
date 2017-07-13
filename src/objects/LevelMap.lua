@@ -5,6 +5,7 @@
 local class = require('middleclass')
 
 local LevelMap = class('LevelMap')
+local color = require('colorise')
 
 ---------------------------------------------------------------
 -- Creates a new LevelMap.
@@ -17,7 +18,7 @@ function LevelMap:initialize(numTilesX, numTilesY, tileSize, opts)
 	self.tileSize = tileSize
 	-- TODO: Make color dynamic
 	self.line_color = opts.line_color or '#ffffff'
-	self.background_color = opts.background_color or '#000000'
+	self.background_color = opts.background_color or '#3c3c3c'
 	self.xOffset = opts.x_offset or 0
 	self.yOffset = opts.y_offset or 0
 
@@ -31,7 +32,10 @@ end
 --------------------------------------------------------------------
 -- Draws itself.
 function LevelMap:draw()
-	love.graphics.setColor(0, 128, 0)
+	-- TODO: Draw the lines
+
+	-- Draws the background
+	love.graphics.setColor(color.hex2rgb(self.background_color))
 	love.graphics.rectangle( "fill", self.xOffset, self.yOffset, self.width, self.height )
 	love.graphics.setColor(0, 0, 0)
 end

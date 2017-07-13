@@ -14,6 +14,7 @@ local TextureObject = class('TextureObject', RenderObject)
 function TextureObject:initialize(opts)
 	-- Invoke parent's constructor
 	RenderObject.initialize(self, opts)
+	if(opts == nil) then opts = {} end
 	self.scale = {
 		x = opts.scale or 1,
 		y = opts.scale or 1
@@ -21,13 +22,18 @@ function TextureObject:initialize(opts)
 
 	-- Calculate offsets for drawing image at center
 	self.image = opts.image
-	local width, height = self.image:getDimensions()
-	self.image_spec = {
-		w = width,
-		h = height,
-		offX = width * 0.5,
-		offY = width * 0.5
-	}
+
+	if self.image ~= nil then
+		local width, height = self.image:getDimensions()
+		self.image_spec = {
+			w = width,
+			h = height,
+			offX = width * 0.5,
+			offY = width * 0.5
+		}
+	else
+		print("Image was nil!")
+	end
 end
 
 
