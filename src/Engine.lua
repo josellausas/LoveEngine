@@ -34,8 +34,8 @@ local Engine = {
 		rightKey = 'right'
 	},
 	on_mouse_released = nil,
-	on_shift_down = nil,
-	on_shift_up = nil,
+	on_shift_pressed = nil,
+	on_shift_released = nil,
 
 }
 local is_shift_down = false
@@ -59,12 +59,16 @@ local handleClick = function(button, x, y)
 	end
 end
 
-local handleShiftDown = function()
+
+------------------------------------------------------------
+-- Callback for shift pressed event.
+-- Creates a new table for storing
+local shift_was_pressed = function()
 	created_while_shift = {}
 	is_shift_down = true
 end
 
-local handleShiftRelease = function()
+local shift_was_released = function()
 	is_shift_down = false
 
 	-- Create a group with that
@@ -91,8 +95,8 @@ function Engine:reset()
 		self.on_mouse_released = nil
 	end
 	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
-	self.on_shift_up = Input.on_shift_pressed:addAction(handleShiftRelease)
-	self.on_shift_down = Input.on_shift_released:addAction(handleShiftDown)
+	self.on_shift_pressed = Input.on_shift_pressed:addAction(shift_was_pressed)
+	self.on_shift_releasedft = Input.on_shift_released:addAction(shift_was_released)
 end
 
 
