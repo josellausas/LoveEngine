@@ -6,8 +6,8 @@ local InputManager = {
 	log = nil,
 	on_mouse_released = Events.newEvent(),
 	on_mouse_pressed = Events.newEvent(),
-	on_key_pressed = Events.newEvent(),
-	on_key_released = Events.newEvent(),
+	on_shift_pressed = Events.newEvent(),
+	on_shift_released = Events.newEvent(),
 }
 
 
@@ -20,8 +20,8 @@ function InputManager:init()
 	-- These are event dispatchers. Call :trigger() to dispatch the event.
 	self.on_mouse_released = Events.newEvent()
 	self.on_mouse_pressed = Events.newEvent()
-	self.on_key_pressed = Events.newEvent()
-	self.on_key_released = Events.newEvent()
+	self.on_shift_pressed = Events.newEvent()
+	self.on_shift_released = Events.newEvent()
 end
 
 
@@ -30,7 +30,9 @@ end
 -- Invoke this when a keyPressed event has happened
 -- @param key The key that was pressed
 function InputManager:handleKeyPressed(key)
-	self.on_key_pressed:trigger(key)
+	if key == 'lshift' or key=='rshift' then
+		self.on_shift_pressed:trigger()
+	end
 end
 
 
@@ -43,7 +45,9 @@ function InputManager:handleKeyReleased(key)
 	if key == 'escape' then
 		love.event.quit()
 	end
-	self.on_key_released:trigger(key)
+	if key == 'lshift' or key=='rshift' then
+		self.on_shift_released:trigger()
+	end
 end
 
 
@@ -86,8 +90,8 @@ function InputManager:shutdown()
 	--  from these events before this happens
 	self.on_mouse_released = nil
 	self.on_mouse_pressed = nil
-	self.on_key_pressed = nil
-	self.on_key_released = nil
+	self.on_shift_pressed = nil
+	self.on_shift_released = nil
 end
 
 

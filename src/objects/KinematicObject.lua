@@ -3,10 +3,11 @@
 -- An object that can move and knows how to update and draw itself.
 -- Must call the update()  and draw() functions on this every frame.
 local class = require 'middleclass'
-local RenderObejct = require('src.objects.RenderObject')
+local RenderObject = require('src.objects.RenderObject')
+local TextureObject = require('src.objects.TextureObject')
 local rotate90 = math.rad(90)
 
-local KinematicObject = class('KinematicObject', RenderObject)
+local KinematicObject = class('KinematicObject', TextureObject)
 
 
 -------------------------------------------------
@@ -17,12 +18,13 @@ local KinematicObject = class('KinematicObject', RenderObject)
 -- @param opts {} The options for the object
 function KinematicObject:initialize(opts)
 	-- Invoke parent's constructor
-	RenderObejct.initialize(self, opts)
+	TextureObject.initialize(self, opts)
 
 	-- Setup a Kineti object
 	self.speed = opts.speed or 0
 	self.heading = opts.heading or 0
 	self.lifetime = 0
+
 end
 
 
@@ -59,13 +61,17 @@ end
 -- Draw.
 -- Draws itself
 function KinematicObject:draw()
-	love.graphics.draw(
-		self.image,
-		self.x, self.y,
-		self.heading + rotate90,
-		self.scale.x, self.scale.y,
-		self.image_spec.offX, self.image_spec.offY
-	)
+	if self.image then
+		love.graphics.draw(
+			self.image,
+			self.x, self.y,
+			self.heading + rotate90,
+			self.scale.x, self.scale.y,
+			self.image_spec.offX, self.image_spec.offY
+		)
+	else
+		RenderObject.draw(self)
+	end
 end
 
 

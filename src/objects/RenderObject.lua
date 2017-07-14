@@ -5,6 +5,7 @@ local RenderObject = class('RenderObject')
 local defaults = {
 	radius = 20
 }
+local color = require('colorise')
 
 -----------------------
 -- Creates a new RenderObject.
@@ -22,7 +23,9 @@ function RenderObject:initialize(opts)
 	self.is_debug = opts.is_debug or false
 	self.radius = opts.radius or 20
 	self.label = opts.label or nil
+	self.color = opts.color or '#AA7239'
 end
+
 
 -----------------------------------
 -- Renders the object.
@@ -30,7 +33,7 @@ end
 -- Renders a circle and debug information if enabled.
 function RenderObject:draw()
 	-- Draw in place
-	love.graphics.setColor(255, 0, 0)
+	love.graphics.setColor(color.hex2rgb(self.color))
 	love.graphics.circle("line", self.x, self.y, self.radius)
 	love.graphics.setColor(0, 0, 0)
 	if self.label then

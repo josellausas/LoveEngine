@@ -34,8 +34,12 @@ local Engine = {
 		rightKey = 'right'
 	},
 	on_mouse_released = nil,
-}
+	on_shift_down = nil,
+	on_shift_up = nil,
 
+}
+local is_shift_down = false
+local created_while_shift = {}
 --------------------------------------------
 -- Callback for click event.
 -- Reacts to the user releasing the mouse button.
@@ -46,7 +50,29 @@ local Engine = {
 local handleClick = function(button, x, y)
 	-- Take into account the camera to get the correct coordinates
 	local gameX, gameY = Engine.camera:mousePosition(x,y)
-	Engine:create('obj', {x=gameX, y=gameY})
+
+	if is_shift_down then
+		local  e = Engine:create('obj', {x=gameX, y=gameY, color='#cccccc'})
+		table.insert(created_while_shift, e)
+	else
+		Engine:create('obj', {x=gameX, y=gameY})
+	end
+end
+
+local handleShiftDown = function()
+	created_while_shift = {}
+	is_shift_down = true
+end
+
+local handleShiftRelease = function()
+	is_shift_down = false
+
+	-- Create a group with that
+	local g = Group:new(created_while_shift, {})
+	g.label = g:getAveragePosition()
+	table.insert(Engine.all_objects, g)
+
+	created_while_shift = nil
 end
 
 
@@ -65,6 +91,8 @@ function Engine:reset()
 		self.on_mouse_released = nil
 	end
 	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
+	self.on_shift_up = Input.on_shift_pressed:addAction(handleShiftRelease)
+	self.on_shift_down = Input.on_shift_released:addAction(handleShiftDown)
 end
 
 
@@ -162,9 +190,22 @@ end
 -- Release memory.
 -- Releases all the objects and memory
 function Engine:shutdown()
+	-- Check for action and release
 	if self.on_mouse_released then
 		Input.on_mouse_released:removeAction(self.on_mouse_released)
 		self.on_mouse_released = nil
+	end
+
+	-- Check for action and release
+	if self.on_shift_up then
+		Input.on_shift_pressed:removeAction(self.on_shift_down)
+		self.on_shift_down = nil
+	end
+
+	-- Check for action and release
+	if self.on_shift_up then
+		Input.on_shift_released:removeAction(self.on_shift_up)
+		self.on_shift_up = nil
 	end
 
 	-- Loop all objects and dispose
@@ -173,6 +214,8 @@ function Engine:shutdown()
 	for _,obj in ipairs(self.all_objects) do
 		obj = nil
 	end
+
+	-- Setup with freshest things
 	self:reset()
 end
 

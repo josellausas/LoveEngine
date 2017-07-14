@@ -12,9 +12,9 @@ local TextureObject = class('TextureObject', RenderObject)
 -- Cretes a new Texture Object.
 -- This object cant move.
 function TextureObject:initialize(opts)
+	if(opts == nil) then opts = {} end
 	-- Invoke parent's constructor
 	RenderObject.initialize(self, opts)
-	if(opts == nil) then opts = {} end
 	self.scale = {
 		x = opts.scale or 1,
 		y = opts.scale or 1
@@ -41,7 +41,9 @@ end
 -- Draws itself.
 -- Draws the image at x,y
 function TextureObject:draw()
-	love.graphics.draw(self.image, self.x, self.y)
+	if love.image then
+		love.graphics.draw(self.image, self.x, self.y)
+	end
 
 	-- Only draw collision circles in debug mode.
 	if self.is_debug then

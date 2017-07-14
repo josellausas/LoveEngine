@@ -37,7 +37,6 @@ function LevelMap:draw()
 	-- Draws the background
 	love.graphics.setColor(color.hex2rgb(self.background_color))
 	love.graphics.rectangle( "fill", self.xOffset, self.yOffset, self.width, self.height )
-	love.graphics.setColor(0, 0, 0)
 
 	if self.gridline then
 		--Draw the lines

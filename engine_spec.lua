@@ -5,6 +5,7 @@
 local Engine = require('src.Engine')
 local LevelMap = require('src.objects.LevelMap')
 
+
 ---------------------------------------
 -- Creates a mock image for testing.
 -- @treturn Image An image
@@ -59,12 +60,12 @@ describe('Engine', function()
 		assert.is_equal(circle.radius, 20)
 
 		local circle02 = Engine:create("obj", {
-			label="object02",
 			x=100, y=101,
 			radius=20,
 			color='#3c3c3c',
 			border=4
 		})
+		circle02.label = "object02"
 		assert.is_equal(circle02.x, 100)
 		assert.is_equal(circle02.y, 101)
 		assert.is_equal(circle02.radius, 20)
