@@ -32,7 +32,8 @@ function TextureObject:initialize(opts)
 			offY = width * 0.5
 		}
 	else
-		print("Image was nil!")
+		-- TODO: Fix this
+		-- print("Image was nil!")
 	end
 end
 

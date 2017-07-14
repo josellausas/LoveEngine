@@ -12,7 +12,6 @@ local Colors = require('src.Colors')
 local Group = require('src.objects.Group')
 
 
-
 local Engine = {
 	--- The map grid for the game
 	level_map = nil,
@@ -33,13 +32,20 @@ local Engine = {
 		leftKey = 'left',
 		rightKey = 'right'
 	},
+	--- Calback event handle for mouse event. Must be released
 	on_mouse_released = nil,
+	--- Callback event handle. Must be released
 	on_shift_pressed = nil,
+	--- Callback event handle. Must be relased
 	on_shift_released = nil,
 
 }
+--- Flag indicating if shift key is down.
 local is_shift_down = false
+--- Stores the objects created while holding shift.
 local created_while_shift = {}
+
+
 --------------------------------------------
 -- Callback for click event.
 -- Reacts to the user releasing the mouse button.
@@ -68,12 +74,19 @@ local shift_was_pressed = function()
 	is_shift_down = true
 end
 
+
+--------------------------------------------------------------
+-- Callback for shift released event.
+-- Creates a new group of objects from the objects that where created while holding shift.
 local shift_was_released = function()
 	is_shift_down = false
 
 	-- Create a group with that
 	local g = Group:new(created_while_shift, {})
-	g.label = g:getAveragePosition()
+	g.x, g.y = g:getAveragePosition()
+	g.label = 'avg=('..g.x..','..g.y..')'
+	g.color = '#ff0000'
+
 	table.insert(Engine.all_objects, g)
 
 	created_while_shift = nil
@@ -172,6 +185,11 @@ function Engine:create(obj_type, opts)
 end
 
 
+---------------------------------------------------------------------------
+-- Creates a Group of from a table of options.
+-- Creates a Group of Kinematic objects from a table of options.
+-- @param groupList *{}* A table of tables with named options.
+-- @treturn Group A new group with the created Kinematic Objects inside.
 function Engine:createGroupWithOptions(groupList)
 	local created_list = {}
 	for k,option in ipairs(groupList) do

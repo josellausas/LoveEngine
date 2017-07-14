@@ -17,6 +17,7 @@ local KinematicObject = class('KinematicObject', TextureObject)
 -- - heading
 -- @param opts {} The options for the object
 function KinematicObject:initialize(opts)
+	opts = opts or {}
 	-- Invoke parent's constructor
 	TextureObject.initialize(self, opts)
 
