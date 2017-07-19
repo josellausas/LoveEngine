@@ -3,6 +3,7 @@
 -- A window for UI.
 local class = require 'middleclass'
 local RenderObject = require 'src.objects.RenderObject'
+local color = require 'colorise'
 
 --- The Window Class
 local Window = class('Window', RenderObject)
@@ -20,7 +21,7 @@ function Window:initialize(width, height, opts)
 	self.width = width or 200
 	self.height = height or 200
 	self.rect_color = opts.rect_color or '#0000CC'
-	self.draw_mode = opts.draw_mode or 'line'
+	self.draw_mode = opts.draw_mode or 'fill'
 	self.is_open = opts.is_open or true
 end
 

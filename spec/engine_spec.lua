@@ -206,5 +206,12 @@ describe('Engine', function()
 			assert.is_not_nil(g)
 			assert.is_equal(3, g:count())
 		end)
+
+		it('should create a Window', function()
+			local old_count = #Engine.ui_objects
+			local w = Engine:create('window', {width=300, height=300, x=100, y=100})
+			assert.is_not_nil(w)
+			assert.is_equal(old_count + 1, #Engine.ui_objects)
+		end)
 	end)
 end)

@@ -16,7 +16,7 @@ describe('MQTT Client', function()
 
 	it('should publish to a channel', function()
 		-- Publish a message
-		mqtt:publish("Hello Love!")
+		mqtt:publish("Testing Game's MQTTT publish")
 	end)
 
 	it('should subscribe to a channel', function()

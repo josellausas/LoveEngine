@@ -55,7 +55,7 @@ end
 ----------------------------------------------------
 -- Gets the average position for all the members
 -- Calculates the math average of all positions for all members.
--- @return The average coordinates
+-- @return avgX, avgY. The average coordinates.
 function Group:getAveragePosition()
 	local averageX = 0
 	local averageY = 0

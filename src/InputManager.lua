@@ -8,6 +8,7 @@ local InputManager = {
 	on_mouse_pressed = Events.newEvent(),
 	on_shift_pressed = Events.newEvent(),
 	on_shift_released = Events.newEvent(),
+	on_w_released = Events.newEvent(),
 }
 
 
@@ -22,6 +23,7 @@ function InputManager:init()
 	self.on_mouse_pressed = Events.newEvent()
 	self.on_shift_pressed = Events.newEvent()
 	self.on_shift_released = Events.newEvent()
+	self.on_w_released = Events.newEvent()
 end
 
 
@@ -47,6 +49,9 @@ function InputManager:handleKeyReleased(key)
 	end
 	if key == 'lshift' or key=='rshift' then
 		self.on_shift_released:trigger()
+	end
+	if key == 'w' then
+		self.on_w_released:trigger()
 	end
 end
 

@@ -12,7 +12,9 @@ local Camera = require('src.Camera')
 local Input = require('src.InputManager')
 local Colors = require('src.Colors')
 local Group = require('src.objects.Group')
+local Window = require('src.objects.Window')
 local ll = require('src.Analytics')
+
 
 
 local Engine = {
@@ -26,6 +28,8 @@ local Engine = {
 	static_objects = {}, -- Weak links
 	--- Kinematic Objects. These move and have an update(dt) function
 	moving_objects = {}, -- Weak links
+	--- UI Objects. Draws on top of everything and is not relative to the camera
+	ui_objects = {},
 	--- How long has the game been running. A dt timebucket
 	elapsed_time = 0,
 	--- Some user preferences.
@@ -33,7 +37,8 @@ local Engine = {
 		upKey = 'up',
 		downKey = 'down',
 		leftKey = 'left',
-		rightKey = 'right'
+		rightKey = 'right',
+		createWindowKey = 'w',
 	},
 	--- Calback event handle for mouse event. Must be released
 	on_mouse_released = nil,
@@ -41,6 +46,8 @@ local Engine = {
 	on_shift_pressed = nil,
 	--- Callback event handle. Must be relased
 	on_shift_released = nil,
+	--- Callback for creating window
+	on_create_window = nil,
 
 }
 --- Flag indicating if shift key is down.
@@ -95,6 +102,10 @@ local shift_was_released = function()
 	created_while_shift = nil
 end
 
+local on_create_window = function()
+	local w = Engine:create('window', {width=400, height=400, x=100, y=50})
+end
+
 
 ----------------------------
 -- Clears all internals.
@@ -103,6 +114,7 @@ function Engine:reset()
 	self.all_objects = {}
 	self.static_objects = {}
 	self.moving_objects = {}
+	self.ui_objects = {}
 	self.elapsed_time = 0
 	self.level_map = LevelMap:new(10, 10, 100, {background_color='#2A7E43', line_color='#AA4839'})
 	self.camera = Camera:new({scale=1})
@@ -113,6 +125,7 @@ function Engine:reset()
 	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
 	self.on_shift_pressed = Input.on_shift_pressed:addAction(shift_was_pressed)
 	self.on_shift_releasedft = Input.on_shift_released:addAction(shift_was_released)
+	self.on_create_window = Input.on_w_released:addAction(on_create_window)
 end
 
 
@@ -158,7 +171,10 @@ function Engine:draw()
 			drawable:draw()
 		end
 	self.camera:unset()
-	-- TODO: Draw GUI here
+	-- Draw GUI here
+	for _, drawable in ipairs(self.ui_objects) do
+		drawable:draw()
+	end
 end
 
 
@@ -175,17 +191,22 @@ function Engine:create(obj_type, opts)
 		created_obj = RenderObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.static_objects, created_obj)
+		created_obj.id = 'obj'..#self.all_objects
 	-- Create a moving type of object
 	elseif obj_type == "mov" then
 		created_obj = KinematicObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.moving_objects, created_obj)
+		created_obj.id = 'obj'..#self.all_objects
+	elseif obj_type == "window" then
+		created_obj = Window:new(opts.width, opts.height, opts)
+		table.insert(self.ui_objects, created_obj)
+		created_obj.id = 'ui'..#self.ui_objects
 	end
 
-	-- Give it an ID
-	created_obj.id = 'obj'..#self.all_objects
-	created_obj.label = created_obj.id
 
+	-- Give it an ID
+	created_obj.label = created_obj.id
 	ll:log('Created: "' .. created_obj.label .. '"')
 	return created_obj
 end
@@ -234,6 +255,12 @@ function Engine:shutdown()
 	if self.on_shift_up then
 		Input.on_shift_released:removeAction(self.on_shift_up)
 		self.on_shift_up = nil
+	end
+
+	-- Release create window callback
+	if self.on_create_window then
+		Input.on_w_released:removeAction(self.on_create_window)
+		self.on_create_window = nil
 	end
 
 	-- Loop all objects and dispose
