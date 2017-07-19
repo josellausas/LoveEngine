@@ -1,13 +1,9 @@
-require 'busted.runner'()
 ------------------------------------
 -- Specification for Love Engine.
 -- Unit tests for Engine features
 -- @author jose@josellausas.com
-local Engine = require('src.Engine')
-local LevelMap = require('src.objects.LevelMap')
-local debug = require('mobdebug')
-
-
+local Engine 	= require('src.Engine')
+local LevelMap 	= require('src.objects.LevelMap')
 ---------------------------------------
 -- Creates a mock image for testing.
 -- @treturn Image An image

@@ -1,7 +1,7 @@
-require 'busted.runner'()
 --------------------
 -- Group tests.
 describe('Group', function()
+
 	local Group = require 'src.objects.Group'
 	local Kinematic = require 'src.objects.KinematicObject'
 
@@ -28,5 +28,8 @@ describe('Group', function()
 	end)
 
 	it('should calcute the average position', function()
+		--TODO: Finish this test
+		pending("Finish this test!")
 	end)
+
 end)
