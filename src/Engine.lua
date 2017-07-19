@@ -12,7 +12,7 @@ local Camera = require('src.Camera')
 local Input = require('src.InputManager')
 local Colors = require('src.Colors')
 local Group = require('src.objects.Group')
-local Window = require('src.objects.Window')
+local TextWindow = require('src.objects.TextWindow')
 local ll = require('src.Analytics')
 
 
@@ -102,7 +102,13 @@ local shift_was_released = function()
 end
 
 local on_create_window = function()
-	local w = Engine:create('window', {width=400, height=400, x=100, y=50})
+	local w = Engine:create('window', {
+		width=200, height=100,
+		x=100, y=50,
+		text_list = {
+			"uno", "dos", "tres", "cuatro",
+		},
+	})
 end
 
 
@@ -198,7 +204,7 @@ function Engine:create(obj_type, opts)
 		table.insert(self.moving_objects, created_obj)
 		created_obj.id = 'obj'..#self.all_objects
 	elseif obj_type == "window" then
-		created_obj = Window:new(opts.width, opts.height, opts)
+		created_obj = TextWindow:new(opts.width, opts.height, opts)
 		table.insert(self.ui_objects, created_obj)
 		created_obj.id = 'ui'..#self.ui_objects
 	end
