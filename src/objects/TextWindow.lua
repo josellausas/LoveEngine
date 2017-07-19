@@ -11,7 +11,6 @@ local color = require 'colorise'
 local TextWindow = class('TextWindow', Window)
 
 
-
 ----------------------------------------------------------------
 -- Creates a new TextWindow.
 -- Creates a new text window of the given width.
@@ -25,6 +24,7 @@ function TextWindow:initialize(width, height, opts)
 	self.align = opts.alig or "left"
 	self.new_line_height = opts.line_height or 20
 	self.font_color = opts.font_color or "#FFFFFF"
+	-- TODO: Add margins
 end
 
 
@@ -45,13 +45,19 @@ function TextWindow:add_text(text)
 end
 
 
-
+----------------------------------------------------------------
+-- The number of texts in the text_list.
+-- Returns the number of texts inside the text_list
+-- @return The number of texts
 function TextWindow:text_count()
 	return #self.text_list
 end
 
 
-
+----------------------------------------------------------------
+-- Draws itself.
+-- Draws the base window, then loops the `text_list` and draws
+-- text that fits inside the window.
 function TextWindow:draw()
 	Window.draw(self)
 
@@ -67,8 +73,6 @@ function TextWindow:draw()
 			love.graphics.printf(text, xCoord, yCoord, self.width, self.align)
 		end
 	end
-
-
 end
 
 
