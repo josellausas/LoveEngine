@@ -240,6 +240,27 @@ function Engine:getAllObjects()
 end
 
 
+------------------------------------------------
+-- Executes a string as a create() command.
+-- Unpacks and loads the string as a table. The
+-- table should follow this format:
+-- @usage
+-- Engine:exec_command("'create', {'obj', {x=0,y=0} }")
+function Engine:exec_command(message_command)
+	-- Convert the stirng to a Lua table
+	local command_function = assert(loadstring(message_command))
+	local command_table = command_function()
+	local command_type, command = unpack(command_table)
+
+	if command_type == 'create' then
+		local obj_type, opts = unpack(command)
+		local created_obj = self:create(obj_type, opts)
+	else
+		-- Unkown command
+		ll:log("Unkwon command: " .. message_command)
+	end
+end
+
 ---------------------------------------
 -- Release memory.
 -- Releases all the objects and memory

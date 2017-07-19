@@ -93,4 +93,16 @@ describe('Engine', function()
 		assert.is_not_nil(g)
 		assert.is_equal(3, g:count())
 	end)
+
+	it('should execute create commands', function()
+		local initial_count = #Engine.all_objects
+		local return_some_table = function()
+			return {'create',{'obj',{x = 0, y = 0},},}
+		end
+
+		local bytecode = string.dump(return_some_table)
+
+		Engine:exec_command(bytecode)
+		assert.is_equal(initial_count + 1, #Engine.all_objects)
+	end)
 end)
