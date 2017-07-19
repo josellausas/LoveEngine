@@ -1,9 +1,11 @@
+require 'busted.runner'()
 ------------------------------------
 -- Specification for Love Engine.
 -- Unit tests for Engine features
 -- @author jose@josellausas.com
 local Engine = require('src.Engine')
 local LevelMap = require('src.objects.LevelMap')
+local debug = require('mobdebug')
 
 
 ---------------------------------------
@@ -74,6 +76,7 @@ describe('Engine', function()
 		Engine:shutdown()
 	end)
 
+	--[[
 	it('should create different types of objects', function()
 		Engine:init()
 		local circle02 = Engine:create("obj", {
@@ -83,7 +86,6 @@ describe('Engine', function()
 			color='#3c3c3c',
 			border=4
 		})
-
 		local movingThing = Engine:create("mov", {
 			x = 0,
 			y = 0,
@@ -102,6 +104,7 @@ describe('Engine', function()
 
 		Engine:shutdown()
 	end)
+	]]
 
 	describe('LevelMap', function()
 		it('shold create a grid', function()

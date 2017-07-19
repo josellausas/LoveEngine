@@ -1,3 +1,4 @@
+require 'busted.runner'()
 --------------------
 -- Group tests.
 describe('Group', function()
@@ -27,7 +28,5 @@ describe('Group', function()
 	end)
 
 	it('should calcute the average position', function()
-
 	end)
-
 end)

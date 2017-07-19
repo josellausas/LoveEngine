@@ -6,6 +6,7 @@ local class = require 'middleclass'
 local RenderObject = require('src.objects.RenderObject')
 local TextureObject = require('src.objects.TextureObject')
 local rotate90 = math.rad(90)
+local color = require('colorise')
 
 local KinematicObject = class('KinematicObject', TextureObject)
 
@@ -25,7 +26,7 @@ function KinematicObject:initialize(opts)
 	self.speed = opts.speed or 0
 	self.heading = opts.heading or 0
 	self.lifetime = 0
-
+	self.line_color = opts.line_color or '#0000FF'
 end
 
 
@@ -47,14 +48,11 @@ function KinematicObject:update(dt)
 	self.lifetime = self.lifetime + dt
 
 	-- Move forwards with our speed
-	local fwdVector = {
-		x = math.cos(self.heading),
-		y = math.sin(self.heading)
-	}
+	fwd_x, fwd_y = love.math.normalize(math.cos(self.heading),math.sin(self.heading))
 
 	-- YUM YUM YUM! Kinematics! Update our position in the world
-	self.x = self.x + (fwdVector.x * self.speed * dt)
-	self.y = self.y + (fwdVector.y * self.speed * dt)
+	self.x = self.x + (fwd_x * self.speed * dt)
+	self.y = self.y + (fwd_y * self.speed * dt)
 end
 
 
@@ -73,6 +71,12 @@ function KinematicObject:draw()
 	else
 		RenderObject.draw(self)
 	end
+
+	-- Draw the forward vector
+	-- Move forwards with our speed
+	local fwd_x, fwd_y = math.cos(self.heading),math.sin(self.heading)
+	love.graphics.setColor(color.hex2rgb(self.line_color))
+	love.graphics.line(self.x, self.y, fwd_x, fwd_y)
 end
 
 
