@@ -103,6 +103,13 @@ function TextWindow:text_count()
 end
 
 
+function TextWindow:get_selected()
+	-- If nothing is selected, then return nil
+	if not self.selected_index then return nil end
+	-- Return the object @ selected_index
+	return self.object_list[self.selected_index]
+end
+
 ----------------------------------------------------------------
 -- Draws itself.
 -- Draws the base window, then loops the `text_list` and draws

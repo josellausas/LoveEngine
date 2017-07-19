@@ -110,7 +110,6 @@ local on_create_window = function()
 			x=20, y=20,
 			width=200, height=400,
 			text_list = {
-				"uno", "dos", "tres", "cuatro",
 			},
 		})
 	end
@@ -201,6 +200,19 @@ function Engine:draw()
 	end
 end
 
+function Engine:register_for_debug(obj)
+	if not self.debug_window then
+		self.debug_window = self:create('window', {
+			window_title = "Object List",
+			x=20, y=20,
+			width=200, height=400,
+			text_list = {
+			},
+		})
+	end
+	self.debug_window:add_text(obj.id, obj)
+end
+
 
 ---------------------------------------------
 -- Creates a new Game object.
@@ -217,6 +229,8 @@ function Engine:create(obj_type, opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.static_objects, created_obj)
 		created_obj.id = 'obj'..#self.all_objects
+		self:register_for_debug(created_obj)
+
 
 	-- Create a moving type of object
 	elseif obj_type == "mov" then
@@ -224,6 +238,7 @@ function Engine:create(obj_type, opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.moving_objects, created_obj)
 		created_obj.id = 'obj'..#self.all_objects
+		self:register_for_debug(created_obj)
 
 	elseif obj_type == "window" then
 		created_obj = TextWindow:new(opts.width, opts.height, opts)
