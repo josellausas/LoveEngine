@@ -47,12 +47,13 @@ local Engine = {
 	on_shift_released = nil,
 	--- Callback for creating window
 	on_create_window = nil,
+	--- The game's state
+	game_state = nil,
+	--- A debug TextWindow
+	debug_window = nil,
 
 }
---- Flag indicating if shift key is down.
-local is_shift_down = false
---- Stores the objects created while holding shift.
-local created_while_shift = {}
+
 
 
 --------------------------------------------
@@ -66,9 +67,9 @@ local handleClick = function(button, x, y)
 	-- Take into account the camera to get the correct coordinates
 	local gameX, gameY = Engine.camera:mousePosition(x,y)
 
-	if is_shift_down then
+	if Engine.game_state.is_shift_down then
 		local  e = Engine:create('obj', {x=gameX, y=gameY, color='#cccccc'})
-		table.insert(created_while_shift, e)
+		table.insert(Engine.game_state.created_while_shift, e)
 	else
 		Engine:create('obj', {x=gameX, y=gameY})
 	end
@@ -79,8 +80,8 @@ end
 -- Callback for shift pressed event.
 -- Creates a new table for storing
 local shift_was_pressed = function()
-	created_while_shift = {}
-	is_shift_down = true
+	Engine.game_state.created_while_shift = {}
+	Engine.game_state.is_shift_down = true
 end
 
 
@@ -88,27 +89,37 @@ end
 -- Callback for shift released event.
 -- Creates a new group of objects from the objects that where created while holding shift.
 local shift_was_released = function()
-	is_shift_down = false
+	Engine.game_state.is_shift_down = false
 
 	-- Create a group with that
-	local g = Group:new(created_while_shift, {})
+	local g = Group:new(Engine.game_state.created_while_shift, {})
 	g.x, g.y = g:getAveragePosition()
 	g.label = 'avg=('..g.x..','..g.y..')'
 	g.color = '#ff0000'
 
 	table.insert(Engine.all_objects, g)
 
-	created_while_shift = nil
+	Engine.game_state.created_while_shift = nil
 end
 
 local on_create_window = function()
-	local w = Engine:create('window', {
-		width=200, height=100,
-		x=100, y=50,
-		text_list = {
-			"uno", "dos", "tres", "cuatro",
-		},
-	})
+	if not Engine.debug_window then
+		Engine.debug_window = Engine:create('window', {
+			width=200, height=100,
+			x=100, y=50,
+			text_list = {
+				"uno", "dos", "tres", "cuatro",
+			},
+		})
+	end
+
+	if Engine.game_state.is_debug_window_shown == true then
+		Engine.debug_window:hide()
+		Engine.game_state.is_debug_window_shown = not Engine.game_state.is_debug_window_shown
+	else
+		Engine.debug_window:show()
+		Engine.game_state.is_debug_window_shown = not Engine.game_state.is_debug_window_shown
+	end
 end
 
 
@@ -131,6 +142,11 @@ function Engine:reset()
 	self.on_shift_pressed = Input.on_shift_pressed:addAction(shift_was_pressed)
 	self.on_shift_releasedft = Input.on_shift_released:addAction(shift_was_released)
 	self.on_create_window = Input.on_w_released:addAction(on_create_window)
+	self.game_state = {
+		is_shift_down = false,
+		created_while_shift = {},
+		is_debug_window_shown = false,
+	}
 end
 
 
@@ -260,6 +276,7 @@ function Engine:exec_command(message_command)
 		ll:log("Unkwon command: " .. message_command)
 	end
 end
+
 
 ---------------------------------------
 -- Release memory.

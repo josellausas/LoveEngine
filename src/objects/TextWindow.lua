@@ -60,6 +60,7 @@ end
 -- text that fits inside the window.
 function TextWindow:draw()
 	Window.draw(self)
+	if not self.is_open then return end
 
 	love.graphics.setColor(color.hex2rgb(self.font_color))
 	-- Loop the text and draw

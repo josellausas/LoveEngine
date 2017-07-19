@@ -77,18 +77,18 @@ end
 
 
 ---------------------------------------------------------------
--- Closes the window.
--- Plays the close animation and handles closing events.
-function Window:close()
-	self.is_open = false
+-- Shows the window.
+-- Plays the show animation and handles open events.
+function Window:show()
+	self.is_open = true
 end
 
 
 ---------------------------------------------------------------
 -- Closes the window.
 -- Plays the close animation and handles closing events.
-function Window:close()
-	self.is_open = true
+function Window:hide()
+	self.is_open = false
 end
 
 return Window
