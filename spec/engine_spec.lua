@@ -2,7 +2,6 @@
 -- Specification for Love Engine.
 -- Unit tests for Engine features
 -- @author jose@josellausas.com
-
 local Engine 	= require('src.Engine')
 local LevelMap 	= require('src.objects.LevelMap')
 

@@ -2,6 +2,8 @@
 -- Input Manager.
 -- Handles all input events and keeps a log
 local Events = require('src.Events')
+local ColMan = require 'src.CollisionManager'
+
 local InputManager = {
 	log = nil,
 	on_mouse_released = Events.newEvent(),
@@ -9,6 +11,7 @@ local InputManager = {
 	on_shift_pressed = Events.newEvent(),
 	on_shift_released = Events.newEvent(),
 	on_w_released = Events.newEvent(),
+	on_mouse_released_ui = Events.newEvent(),
 }
 
 
@@ -24,6 +27,7 @@ function InputManager:init()
 	self.on_shift_pressed = Events.newEvent()
 	self.on_shift_released = Events.newEvent()
 	self.on_w_released = Events.newEvent()
+	self.on_mouse_released_ui = Events.newEvent()
 end
 
 
@@ -74,7 +78,17 @@ end
 -- @param x The X coordinate on screen
 -- @param y The Y coordinate on screen
 function InputManager:handleMouseReleased(button, x, y)
-	self.on_mouse_released:trigger(button, x, y)
+	ui_collision_list = ColMan:get_ui_collisions(x,y)
+
+	if #ui_collision_list > 0 then
+		-- Trigger UI events for mouse
+		self.on_mouse_released_ui:trigger(button, x,y)
+	else
+		-- Trigger game events for mouse
+		self.on_mouse_released:trigger(button, x, y)
+	end
+
+
 end
 
 

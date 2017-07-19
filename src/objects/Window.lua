@@ -14,13 +14,14 @@ local Window = class('Window', RenderObject)
 -- Creates a new Window instance. Need to provide width and height.
 -- @param width The window's width. The number of units wide.
 -- @param height The window's height. The number of units tall.
+-- @param opts An options table
 -- @return *Window* A Window instance.
 function Window:initialize(width, height, opts)
 	if not opts then opts = {} end
 	RenderObject.initialize(self, opts)
 	self.width = width or 200
 	self.height = height or 200
-	self.rect_color = opts.rect_color or '#0000CC'
+	self.rect_color = opts.rect_color or '#0000CC7F'
 	self.draw_mode = opts.draw_mode or 'fill'
 	self.is_open = opts.is_open or true
 end
@@ -31,8 +32,7 @@ end
 -- Draws the window and if `is_debug` is on the base object ontop.
 function Window:draw()
 	if self.is_open then
-		-- Draw ourselves
-		love.graphics.setColor(color.hex2rgb(self.rect_color))
+		love.graphics.setColor(color.hex2rgba(self.rect_color))
 		love.graphics.rectangle( self.draw_mode, self.x, self.y, self.width, self.height )
 	else
 		-- TODO: Draw a closed representation
@@ -89,6 +89,11 @@ end
 -- Plays the close animation and handles closing events.
 function Window:hide()
 	self.is_open = false
+end
+
+
+function Window:release()
+	RenderObject.release(self)
 end
 
 return Window

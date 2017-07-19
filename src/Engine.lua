@@ -13,6 +13,7 @@ local Input = require('src.InputManager')
 local Colors = require('src.Colors')
 local Group = require('src.objects.Group')
 local TextWindow = require('src.objects.TextWindow')
+local ColMan = require 'src.CollisionManager'
 local ll = require('src.Analytics')
 
 
@@ -105,8 +106,9 @@ end
 local on_create_window = function()
 	if not Engine.debug_window then
 		Engine.debug_window = Engine:create('window', {
-			width=200, height=100,
-			x=100, y=50,
+			window_title = "Object List",
+			x=20, y=20,
+			width=200, height=400,
 			text_list = {
 				"uno", "dos", "tres", "cuatro",
 			},
@@ -156,6 +158,7 @@ end
 -- Dont forget to shut down!
 function Engine:init()
 	self:reset()
+	ColMan:init()
 	ll:event('Engine', 'init')
 end
 
@@ -208,21 +211,26 @@ function Engine:create(obj_type, opts)
 	local created_obj = nil
 
 	-- Create a normal type of object
+
 	if obj_type == "obj" then
 		created_obj = RenderObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.static_objects, created_obj)
 		created_obj.id = 'obj'..#self.all_objects
+
 	-- Create a moving type of object
 	elseif obj_type == "mov" then
 		created_obj = KinematicObject:new(opts)
 		table.insert(self.all_objects, created_obj)
 		table.insert(self.moving_objects, created_obj)
 		created_obj.id = 'obj'..#self.all_objects
+
 	elseif obj_type == "window" then
 		created_obj = TextWindow:new(opts.width, opts.height, opts)
 		table.insert(self.ui_objects, created_obj)
 		created_obj.id = 'ui'..#self.ui_objects
+		-- Register for UI collision
+		ColMan:register_ui(created_obj)
 	end
 
 
@@ -282,6 +290,7 @@ end
 -- Release memory.
 -- Releases all the objects and memory
 function Engine:shutdown()
+	ColMan:shutdown()
 	-- Check for action and release
 	if self.on_mouse_released then
 		Input.on_mouse_released:removeAction(self.on_mouse_released)

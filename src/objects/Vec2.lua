@@ -1,5 +1,10 @@
-local class = require 'middleclass'
+-------------------
+-- A 2D Vector.
+-- Vec2
+-- ====
+-- A 2D vector with x and y components.
 
+local class = require 'middleclass'
 local Vec2 = class('Vec2')
 
 

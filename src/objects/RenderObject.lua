@@ -1,11 +1,13 @@
 -----------------------------------------
 -- Base Class for rendering objects.
 local class = require 'middleclass'
-local RenderObject = class('RenderObject')
+local color = require('colorise')
 local defaults = {
 	radius = 20
 }
-local color = require('colorise')
+
+local RenderObject = class('RenderObject')
+
 
 -----------------------
 -- Creates a new RenderObject.
@@ -39,6 +41,10 @@ function RenderObject:draw()
 	if self.label then
 		love.graphics.print(self.label, self.x, self.y)
 	end
+end
+
+function RenderObject:release()
+	-- Release things here
 end
 
 
