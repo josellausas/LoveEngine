@@ -16,7 +16,6 @@ local Window = require('src.objects.Window')
 local ll = require('src.Analytics')
 
 
-
 local Engine = {
 	--- The map grid for the game
 	level_map = nil,
