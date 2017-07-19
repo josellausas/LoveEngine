@@ -1,5 +1,7 @@
 ---------------------------------------------
--- Main Interface.
+-- Game engine.
+-- Game Engine
+-- ===========
 -- This is the main API for interacting with the game.
 -- The engine is the one in charge of creating and managing objects in the game.
 -- Renders the things in the right order.
