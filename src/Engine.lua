@@ -10,6 +10,7 @@ local Camera = require('src.Camera')
 local Input = require('src.InputManager')
 local Colors = require('src.Colors')
 local Group = require('src.objects.Group')
+local ll = require('src.Analytics')
 
 
 local Engine = {
@@ -119,6 +120,7 @@ end
 -- Dont forget to shut down!
 function Engine:init()
 	self:reset()
+	ll:event('Engine', 'init')
 end
 
 
@@ -181,6 +183,8 @@ function Engine:create(obj_type, opts)
 	-- Give it an ID
 	created_obj.id = 'obj'..#self.all_objects
 	created_obj.label = created_obj.id
+
+	ll:log('Created: "' .. created_obj.label .. '"')
 	return created_obj
 end
 
@@ -239,6 +243,8 @@ function Engine:shutdown()
 
 	-- Setup with freshest things
 	self:reset()
+
+	ll:event('Engine', 'shutdown')
 end
 
 
