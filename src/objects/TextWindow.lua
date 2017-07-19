@@ -12,7 +12,6 @@ local ll = require 'src.Analytics'
 
 local TextWindow = class('TextWindow', Window)
 
-
 ----------------------------------------------------------------
 -- Creates a new TextWindow.
 -- Creates a new text window of the given width.
@@ -29,10 +28,44 @@ function TextWindow:initialize(width, height, opts)
 	self.window_title = opts.window_title or 'TextWindow'
 	self.on_mouse_release_action = Input.on_mouse_released_ui:addAction(function(button, x, y)
 		-- React to mouse collision!
-		ll:log("Clicked on: " .. self.window_title)
+		local text_index = self:get_text_index_for_point(x,y)
+
+		if text_index then
+			if text_index == 0 then
+				ll:log("Clicked on: " .. self.window_title)
+			else
+				ll:log("Clicked on text #" .. text_index)
+			end
+		else
+			ll:log("Clicked on TextWindow")
+		end
 	end)
 
 	-- TODO: Add margins
+end
+
+----------------------------------------------
+-- Gets the text_list index for the given point
+-- Determines which text from the list was clicked.
+-- @param x The x coord.
+-- @param y The y coord.
+-- @return The text_list index or nil. Returns 0 if title was clicked
+function TextWindow:get_text_index_for_point(x,y)
+	-- The Tilte was clicked
+	if y > self.y and y < (self.y + self.new_line_height) then
+		return 0
+	end
+
+	for index,text in ipairs(self.text_list) do
+		local minY = self.y + (index * self.new_line_height)
+		local maxY = minY + self.new_line_height
+
+		if y > minY and y < maxY then
+			return index
+		end
+	end
+
+	return nil
 end
 
 
