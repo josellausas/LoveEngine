@@ -22,21 +22,27 @@ function TextWindow:initialize(width, height, opts)
 	if not opts then opts = {} end
 	Window.initialize(self, width, height, opts)
 	self.text_list = opts.text_list or {}
+	self.object_list = opts.object_list or {}
 	self.align = opts.alig or "left"
 	self.new_line_height = opts.line_height or 20
 	self.font_color = opts.font_color or "#FFFFFF"
+	self.selected_color = opts.selected_color or "#FF3333"
 	self.window_title = opts.window_title or 'TextWindow'
+	self.selected_index = nil
 	self.on_mouse_release_action = Input.on_mouse_released_ui:addAction(function(button, x, y)
 		-- React to mouse collision!
 		local text_index = self:get_text_index_for_point(x,y)
 
 		if text_index then
 			if text_index == 0 then
+				self.selected_index = nil
 				ll:log("Clicked on: " .. self.window_title)
 			else
+				self.selected_index = text_index
 				ll:log("Clicked on text #" .. text_index)
 			end
 		else
+			self.selected_index = nil
 			ll:log("Clicked on TextWindow")
 		end
 	end)
@@ -80,9 +86,11 @@ end
 ----------------------------------------------------------------
 -- Add text.
 -- Adds text to the Text window
-function TextWindow:add_text(text)
+function TextWindow:add_text(text, object)
 	if not text then return nil end
+	if not object then object = {} end
 	table.insert(self.text_list, text)
+	table.insert(self.object_list, object)
 end
 
 
@@ -117,6 +125,13 @@ function TextWindow:draw()
 		-- Determine where the text will go
 		local xCoord = self.x
 		local yCoord = self.y + (index) * self.new_line_height
+
+		-- Draw a different color for selected text
+		if index == self.selected_index then
+			love.graphics.setColor(color.hex2rgb(self.selected_color))
+		else
+			love.graphics.setColor(color.hex2rgb(self.font_color))
+		end
 
 		-- Only draw within our height
 		if yCoord < (self.y + self.height) then
