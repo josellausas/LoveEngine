@@ -1,7 +1,7 @@
-describe('Windows >', function()
-	local Window = require 'src.objects.Window'
-
+describe('WindowSpecs >', function()
+	--- Window Specs
 	describe('Window', function()
+		local Window = require 'src.objects.Window'
 		it('should create a new instance.', function()
 			local w = Window:new()
 			assert.is_not_nil(w)
@@ -44,6 +44,8 @@ describe('Windows >', function()
 		end)
 	end)
 
+
+	--- TextWindow Specs
 	describe('TextWindow', function()
 		local TextWindow = require 'src.objects.TextWindow'
 
@@ -63,5 +65,15 @@ describe('Windows >', function()
 			w:reset_text()
 			assert.is_equal(0, w:text_count())
 		end)
+
+		it('should add text and object', function()
+			pending('add text and object')
+		end)
+
+		it('should select an object from the list', function()
+			pending('test this')
+		end)
 	end)
+
+
 end)
