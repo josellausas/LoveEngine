@@ -28,8 +28,16 @@ describe('Group', function()
 	end)
 
 	it('should calcute the average position', function()
-		--TODO: Finish this test
-		pending("Finish this test!")
+		local g = Group:new({})
+		assert.is_equal(0, g:count())
+		-- Add a member
+		g:add(Kinematic:new({x=10, y=10, speed=2, heading=1}))
+		-- Add a member
+		g:add(Kinematic:new({x=-10, y=-10, speed=2, heading=1}))
+
+		avg_x, avg_y = g:getAveragePosition()
+		assert.is_equal(0, avg_x)
+		assert.is_equal(0, avg_y)
 	end)
 
 end)

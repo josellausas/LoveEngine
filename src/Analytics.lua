@@ -1,7 +1,7 @@
 ---------------------------------------------------------------
 -- Analytics and Log reporting.
 -- Modular reporting and logging.
-local mqtt = require 'mqtt'
+local mqtt = require 'src.MQTT'
 
 
 ------------------------------------------------------------------

@@ -6,27 +6,23 @@ local Engine = require('src.Engine')
 local InputManager = require('src.InputManager')
 
 
--------------------------------------------------------
+---------------------------------------------------------
 -- The windows width
---
 -- @return number The width in pixels
--------------------------------------------------------
 local function getWidth()
 	return love.graphics.getWidth()
 end
 
 
--------------------------------------------------------
--- The window's height
---
+---------------------------------------------------------
+-- The window's height.
 -- @return number The height in pixels
--------------------------------------------------------
 local function getHeight()
 	return love.graphics.getHeight()
 end
 
 
----------------------------
+---------------------------------------------------------
 -- Load Game.
 -- Loads and initializes the game
 function love.load()
@@ -35,7 +31,7 @@ function love.load()
 end
 
 
-------------------------
+---------------------------------------------------------
 -- Update Game.
 -- The game loop, updates all physics
 -- @tparam float Time since last frame
@@ -44,7 +40,7 @@ function love.update(dt)
 end
 
 
-----------------------
+---------------------------------------------------------
 -- Draw Game.
 -- Renders the scene after the update
 function love.draw()
@@ -52,6 +48,9 @@ function love.draw()
 end
 
 
+---------------------------------------------------------
+-- Quits the program.
+-- Exits the program in a clean way.
 function love.quit()
 	-- Before quits runs this:
 	Engine:shutdown()
@@ -59,7 +58,7 @@ function love.quit()
 end
 
 
-----------------------------------------
+---------------------------------------------------------
 -- Handles the focus event
 -- @param f Indicates if we have focus
 function love.focus(f)
@@ -72,13 +71,12 @@ function love.focus(f)
 end
 
 
-----------------------------------------------------
+---------------------------------------------------------
 -- Handles mouse presses.
 --
 -- @param x **(Number)** The x coordinate
 -- @param y **(Number)** The y coordinate
 -- @param button **(Button)** the button pressed
-----------------------------------------------------
 function love.mousepressed(x,y,button)
 	InputManager:handleMousePressed(button, x, y)
 end
@@ -91,18 +89,17 @@ function love.mousereleased(x,y,button)
 end
 
 
--------------------------
+---------------------------------------------------------
 -- A key has been presed.
 function love.keypressed(key)
 	InputManager:handleKeyPressed(key)
 end
 
 
-----------------------------------------
+---------------------------------------------------------
 -- Handles heyboard input
 --
 -- @param key The key that was pressed
-----------------------------------------
 function love.keyreleased(key)
 	InputManager:handleKeyReleased(key)
 end

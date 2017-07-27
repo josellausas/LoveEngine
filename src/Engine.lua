@@ -1,4 +1,4 @@
----------------------------------------------
+---------------------------------------------------------
 -- Game engine.
 -- Game Engine
 -- ===========
@@ -15,7 +15,6 @@ local Group = require('src.objects.Group')
 local TextWindow = require('src.objects.TextWindow')
 local ColMan = require 'src.CollisionManager'
 local ll = require('src.Analytics')
-
 
 local Engine = {
 	--- The map grid for the game
@@ -57,7 +56,7 @@ local Engine = {
 
 
 
---------------------------------------------
+-------------------------------------------------------------------------------
 -- Callback for click event.
 -- Reacts to the user releasing the mouse button.
 -- @function handleClick.
@@ -77,7 +76,7 @@ local handleClick = function(button, x, y)
 end
 
 
-------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Callback for shift pressed event.
 -- Creates a new table for storing
 local shift_was_pressed = function()
@@ -86,9 +85,10 @@ local shift_was_pressed = function()
 end
 
 
---------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Callback for shift released event.
--- Creates a new group of objects from the objects that where created while holding shift.
+-- Creates a new group of objects from the objects that where created
+--  while holding shift.
 local shift_was_released = function()
 	Engine.game_state.is_shift_down = false
 
@@ -103,6 +103,9 @@ local shift_was_released = function()
 	Engine.game_state.created_while_shift = nil
 end
 
+
+-------------------------------------------------------------------------------
+-- Callback for the window being created.
 local on_create_window = function()
 	if not Engine.debug_window then
 		Engine.debug_window = Engine:create('window', {
@@ -116,15 +119,17 @@ local on_create_window = function()
 
 	if Engine.game_state.is_debug_window_shown == true then
 		Engine.debug_window:hide()
-		Engine.game_state.is_debug_window_shown = not Engine.game_state.is_debug_window_shown
+		Engine.game_state.is_debug_window_shown =
+		not Engine.game_state.is_debug_window_shown
 	else
 		Engine.debug_window:show()
-		Engine.game_state.is_debug_window_shown = not Engine.game_state.is_debug_window_shown
+		Engine.game_state.is_debug_window_shown =
+		not Engine.game_state.is_debug_window_shown
 	end
 end
 
 
-----------------------------
+-------------------------------------------------------------------------------
 -- Clears all internals.
 -- Clears and resets all members.
 function Engine:reset()
@@ -133,7 +138,11 @@ function Engine:reset()
 	self.moving_objects = {}
 	self.ui_objects = {}
 	self.elapsed_time = 0
-	self.level_map = LevelMap:new(10, 10, 100, {background_color='#2A7E43', line_color='#AA4839'})
+	self.level_map = LevelMap:new(
+		10, 10,
+		100,
+		{ background_color='#2A7E43', line_color='#AA4839' }
+	)
 	self.camera = Camera:new({scale=1})
 	if self.on_mouse_released then
 		Input.on_mouse_released:removeAction(self.on_mouse_released)
@@ -151,7 +160,7 @@ function Engine:reset()
 end
 
 
--------------------------------------
+-------------------------------------------------------------------------------
 -- Initialize the Engine
 -- Run this before anything else.
 -- Dont forget to shut down!
@@ -162,7 +171,7 @@ function Engine:init()
 end
 
 
--------------------------------------
+-------------------------------------------------------------------------------
 -- Update the Engine.
 -- Gets called every frame
 -- @param dt Delta Time. Time since last frame was shown
@@ -182,7 +191,7 @@ function Engine:update(dt)
 end
 
 
--------------------------------------
+-------------------------------------------------------------------------------
 -- Renders all the things.
 -- All the things get rendered
 function Engine:draw()
@@ -200,6 +209,10 @@ function Engine:draw()
 	end
 end
 
+
+-------------------------------------------------------------------------------
+-- Registers an object for being displayed in the debug window.
+-- @param obj The object to be monitored.
 function Engine:register_for_debug(obj)
 	if not self.debug_window then
 		self.debug_window = self:create('window', {
@@ -214,7 +227,7 @@ function Engine:register_for_debug(obj)
 end
 
 
----------------------------------------------
+-------------------------------------------------------------------------------
 -- Creates a new Game object.
 -- Creates a new object of the given type, using
 -- the given options. The engine keeps track of all
@@ -248,7 +261,6 @@ function Engine:create(obj_type, opts)
 		ColMan:register_ui(created_obj)
 	end
 
-
 	-- Give it an ID
 	created_obj.label = created_obj.id
 	ll:log('Created: "' .. created_obj.label .. '"')
@@ -256,7 +268,7 @@ function Engine:create(obj_type, opts)
 end
 
 
----------------------------------------------------------------------------
+-------------------------------------------------------------------------------
 -- Creates a Group of from a table of options.
 -- Creates a Group of Kinematic objects from a table of options.
 -- @param groupList *{}* A table of tables with named options.
@@ -271,15 +283,16 @@ function Engine:createGroupWithOptions(groupList)
 end
 
 
------------------------------------------
+-------------------------------------------------------------------------------
 -- Returns a table of all the objects
--- @treturn {RenderObject,...} A list of all RenderObjects created with the Engine
+-- @treturn {RenderObject,...} A list of all RenderObjects
+--  created with the Engine
 function Engine:getAllObjects()
 	return self.all_objects
 end
 
 
-------------------------------------------------
+-------------------------------------------------------------------------------
 -- Executes a string as a create() command.
 -- Unpacks and loads the string as a table. The
 -- table should follow this format:
@@ -301,7 +314,7 @@ function Engine:exec_command(message_command)
 end
 
 
----------------------------------------
+-------------------------------------------------------------------------------
 -- Release memory.
 -- Releases all the objects and memory
 function Engine:shutdown()

@@ -7,6 +7,7 @@ local RenderObject = require('src.objects.RenderObject')
 local TextureObject = require('src.objects.TextureObject')
 local rotate90 = math.rad(90)
 local color = require('colorise')
+local Vec2 = require 'src.objects.Vec2'
 
 local KinematicObject = class('KinematicObject', TextureObject)
 
@@ -72,11 +73,7 @@ function KinematicObject:draw()
 		RenderObject.draw(self)
 	end
 
-	-- Draw the forward vector
-	-- Move forwards with our speed
-	local fwd_x, fwd_y = math.cos(self.heading),math.sin(self.heading)
-	love.graphics.setColor(color.hex2rgb(self.line_color))
-	love.graphics.line(self.x, self.y, fwd_x, fwd_y)
+
 end
 
 
