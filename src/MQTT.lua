@@ -12,6 +12,7 @@ local mqtt_client = {
 	log = {},
 	--- The MQTT broker host address. Defaults to `localhost`
 	host = "localhost",
+	enabled = false,
 }
 
 
@@ -36,6 +37,8 @@ end
 -- @param message The message payload to be published.
 -- @return Returns nil if unsuccesfull.
 function mqtt_client:publish(message)
+	if not self.enabled then return end
+
 	if not self.topic then
 		print 'Init the client first!'
 		return nil

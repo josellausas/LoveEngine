@@ -1,3 +1,4 @@
+--- Mock Love Module
 _G.love = {
 	graphics = {
 		push = function() end,
