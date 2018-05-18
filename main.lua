@@ -4,6 +4,7 @@
 -- @author jose@josellausas.com
 local Engine = require('src.Engine')
 local InputManager = require('src.InputManager')
+local world00 = require('rules.world00')
 
 
 ---------------------------------------------------------
@@ -27,7 +28,7 @@ end
 -- Loads and initializes the game
 function love.load()
 	InputManager:init()
-	Engine:init()
+	Engine:init(world00)
 end
 
 

@@ -132,22 +132,27 @@ end
 -------------------------------------------------------------------------------
 -- Clears all internals.
 -- Clears and resets all members.
-function Engine:reset()
+function Engine:reset(world)
 	self.all_objects = {}
 	self.static_objects = {}
 	self.moving_objects = {}
 	self.ui_objects = {}
 	self.elapsed_time = 0
+
 	self.level_map = LevelMap:new(
-		10, 10,
-		100,
-		{ background_color='#2A7E43', line_color='#AA4839' }
+		world.map.num_tiles_x,
+		world.map.num_tiles_y,
+		world.map.tile_size,
+		world.map.options
 	)
-	self.camera = Camera:new({scale=1})
+
+	self.camera = Camera:new(world.camera)
+
 	if self.on_mouse_released then
 		Input.on_mouse_released:removeAction(self.on_mouse_released)
 		self.on_mouse_released = nil
 	end
+
 	self.on_mouse_released = Input.on_mouse_released:addAction(handleClick)
 	self.on_shift_pressed = Input.on_shift_pressed:addAction(shift_was_pressed)
 	self.on_shift_releasedft = Input.on_shift_released:addAction(shift_was_released)
@@ -164,8 +169,8 @@ end
 -- Initialize the Engine
 -- Run this before anything else.
 -- Dont forget to shut down!
-function Engine:init()
-	self:reset()
+function Engine:init(world)
+	self:reset(world)
 	ColMan:init()
 	ll:event('Engine', 'init')
 end
